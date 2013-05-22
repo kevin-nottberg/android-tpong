@@ -1,0 +1,100 @@
+package com.visexample.test;
+
+import android.os.Bundle;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.support.v4.view.MotionEventCompat;
+import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.Window;
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.view.MotionEvent;
+import android.view.View.OnTouchListener;
+
+public class VisExam extends Activity implements OnTouchListener {
+
+  RenderView view;
+	int curPointPosXtwo;
+	int curPointPosYtwo;
+	int curPointPosXone;
+	int curPointPosYone;
+	
+	class RenderView extends View {
+		Paint paint;
+		
+		public RenderView(Context context){
+			super(context);
+			paint = new Paint();
+		}
+		
+		@Override
+		protected void onDraw( Canvas canvas )
+		{
+			Log.d("KevinApp", "OnDraw: " + String.valueOf( curPointPosXone ) + ", " + String.valueOf( curPointPosYone ) );
+			canvas.drawRGB(255, 255, 255);
+			paint.setColor(Color.RED);
+			canvas.drawLine(0, canvas.getHeight() / 2, canvas.getWidth() , canvas.getHeight() / 2, paint);
+			paint.setStyle(Style.FILL);
+			paint.setColor(Color.BLUE);
+			canvas.drawRect((curPointPosXone - 100), (curPointPosYone - 25), (curPointPosXone + 100), (curPointPosYone + 25), paint);
+			paint.setColor(Color.GREEN);
+			canvas.drawRect((curPointPosXtwo - 100), (curPointPosYtwo - 25), (curPointPosXtwo + 100), (curPointPosYtwo + 25), paint);
+			invalidate();
+		}
+	}
+	
+	public boolean onTouch( View v, MotionEvent event )
+	{
+		int halfHeight = view.getHeight() / 2;
+		int maxCount = event.getPointerCount();
+		int action = MotionEventCompat.getActionMasked( event );
+		Log.d("KevinApp", "OnTouch: " + String.valueOf( action ));
+		for( int i = 0; i < maxCount; i++ )
+		{
+			//int mActivePointerId = event.getPointerId(i);
+			// int pointerIndex = event.findPointerIndex(mActivePointerId);
+			//int index = MotionEventCompat.getActionIndex(event);
+			switch( action )
+			{
+			case MotionEvent.ACTION_DOWN:
+			case MotionEvent.ACTION_POINTER_DOWN:
+			case MotionEvent.ACTION_MOVE:
+				Log.d( "KevinApp", "OnTouch" );
+
+				if ( MotionEventCompat.getY( event, i) < halfHeight )
+				{
+					curPointPosXtwo = (int) MotionEventCompat.getX( event, i );
+					// curPointPosYtwo = (int) MotionEventCompat.getY(event, i);
+					view.invalidate();
+				}
+				if ( MotionEventCompat.getY( event, i) > halfHeight )
+				{
+					curPointPosXone = (int) MotionEventCompat.getX( event, i );
+					// curPointPosYone = (int) MotionEventCompat.getY(event, i);
+				}
+			break;
+			}
+		}	
+		return true;
+	}
+	
+	@Override
+	public void onCreate( Bundle savedInstanceState ) 
+	{
+		super.onCreate( savedInstanceState );
+		Log.d( "KevinApp","It got here" );
+		curPointPosXone = 400;
+		curPointPosYone = 1180;
+		curPointPosXtwo = 400;
+		curPointPosYtwo = 25;
+		requestWindowFeature( Window.FEATURE_NO_TITLE );
+		getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
+		view = new RenderView( this );
+		view.setOnTouchListener( this );
+		setContentView( view );
+	}
+}
