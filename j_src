@@ -34,10 +34,12 @@ public class VisExam extends Activity implements OnTouchListener {
 		@Override
 		protected void onDraw( Canvas canvas )
 		{
+			int width = canvas.getWidth();
+			int height = canvas.getWidth();
 			Log.d("KevinApp", "OnDraw: " + String.valueOf( curPointPosXone ) + ", " + String.valueOf( curPointPosYone ) );
 			canvas.drawRGB(255, 255, 255);
 			paint.setColor(Color.RED);
-			canvas.drawLine(0, canvas.getHeight() / 2, canvas.getWidth() , canvas.getHeight() / 2, paint);
+			canvas.drawLine((width - width), height / 2, width, height / 2, paint);
 			paint.setStyle(Style.FILL);
 			paint.setColor(Color.BLUE);
 			canvas.drawRect((curPointPosXone - 100), (curPointPosYone - 25), (curPointPosXone + 100), (curPointPosYone + 25), paint);
