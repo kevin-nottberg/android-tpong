@@ -1,6 +1,6 @@
 package com.badlogic.androidgames; //depends on which package
 
-import android.app.ACtivty;
+import android.app.Activty;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -11,13 +11,16 @@ import android.view.WindowManager;
 
 public class SurfaceViewTest extends Activity
 {
-  FastRenderView renderViewl
+  FastRenderView renderView;
+  MovingObject moveRect;
+  viewUtil viewUtil;
   
   public void onCreate( Bundle savedInstanceState )
   {
     super.onCreate( Bundle savedInstanceState )
     requestWindowFeature( Window.FEATURE_NO_TITLE );
     getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
+    MovingObject moveRect = new Rect( (view.getWidth - 25), (view.getHieght -25), (renderView.getWidth + 25), (renderView.getHeight() + 25);
     renderView = new FastRenderView( this );
     setContentView(renderView);
   }
@@ -77,6 +80,35 @@ public class SurfaceViewTest extends Activity
           //retry
         }
       }
+    }
+  }
+  
+  //public class MovingObjects(movingRect, moveRate) 
+  //{
+   //public void MovingObjects()
+    //{
+      //this.moveRate = moveRate;
+      //this.movingRect = movingRect;
+   //}
+    
+    //public void moveRectNoAccel()
+    //{
+      //if (movingRect.top == (
+    //}
+  //}
+  
+  public class ViewUtil extends View;
+  {
+    Canvas canvas;
+    
+    gWdith()
+    {
+      return canvas.getWidth();
+    }
+    
+    gHeight()
+    {
+      return canvas.getHeight();
     }
   }
 }  
