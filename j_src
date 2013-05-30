@@ -17,7 +17,7 @@ import android.view.View.OnTouchListener;
 
 public class VisExam extends Activity implements OnTouchListener {
 
-  RenderView view;
+  	RenderView view;
 	int curPointPosXtwo;
 	int curPointPosYtwo;
 	int curPointPosXone;
