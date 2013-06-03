@@ -65,6 +65,8 @@ public class SurfaceViewTest extends Activity
         Canvas canvas = holder.lockCanvas();
         canvas.drawRGB(255, 0, 0);
         holder.unlockCanvasandPost( canvas ;)
+        // rect.moveRectWithNoAccel(passedTime);
+        // rect.moveRectWithAccel(passedTime);
       }
     }
     
@@ -83,19 +85,24 @@ public class SurfaceViewTest extends Activity
     }
   }
   
-  //public class MovingObjects(movingRect, moveRate) 
-  //{
-   //public void MovingObjects()
-    //{
-      //this.moveRate = moveRate;
-      //this.movingRect = movingRect;
-   //}
+  public class MovingObjects(movingRect, moveRate) 
+  {
+   public void MovingObjects()
+    {
+      this.moveRate = moveRate;
+      this.movingRect = movingRect;
+    }
     
-    //public void moveRectNoAccel()
-    //{
-      //if (movingRect.top == (
-    //}
-  //}
+    public void moveRectNoAccel()
+    {
+      // update the placement of rectangle when called
+    }
+    
+    public void moveRectWithAccel()
+    {
+      // update placement of rectangle when called
+    }
+  }
   
   public class ViewUtil extends View;
   {
