@@ -22,7 +22,7 @@ public class SurfaceViewTest extends Activity
     getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
     MovingObject moveRect = new Rect( (view.getWidth - 25), (view.getHieght -25), (renderView.getWidth + 25), (renderView.getHeight() + 25);
     renderView = new FastRenderView( this );
-    setContentView(renderView);
+    setContentView( renderView );
   }
   
   protected void onResume()
@@ -37,7 +37,7 @@ public class SurfaceViewTest extends Activity
     renderView.pause();
   }  
   
-  class FastRenderVIew extends SurfaceVIew implements Runnable 
+  class FastRenderView extends SurfaceVIew implements Runnable 
   {
     Thread renderThread = null;
     SurfaceHolder holder;
@@ -63,10 +63,10 @@ public class SurfaceViewTest extends Activity
         if(!holder.getSurface().isValid())
           continue;
         Canvas canvas = holder.lockCanvas();
-        canvas.drawRGB(255, 0, 0);
+        canvas.drawRGB( 255, 0, 0 );
         holder.unlockCanvasandPost( canvas ;)
-        // rect.moveRectWithNoAccel(passedTime);
-        // rect.moveRectWithAccel(passedTime);
+        // rect.moveRectWithNoAccel( passedTime );
+        // rect.moveRectWithAccel( passedTime );
       }
     }
     
@@ -76,46 +76,36 @@ public class SurfaceViewTest extends Activity
       while( true )
       {
         try {
-          renderThread.joing();
+          renderThread.join();
           return;
-        } catch (InterruptedException e) {
+        } catch ( InterruptedException e ) {
           //retry
         }
       }
     }
   }
   
-  public class MovingObjects(movingRect, moveRate) 
+  public class MovingObjRect( movingRect, int moveRate, boolean moving, String direction ) 
   {
    public void MovingObjects()
     {
       this.moveRate = moveRate;
       this.movingRect = movingRect;
+      this.moving = moving;
+      this.direction = direction;
     }
     
-    public void moveRectNoAccel()
+    public void moveRectNoAccel( int passedSec )
     {
-      // update the placement of rectangle when called
+      // update the placement of rectangle when called depending on the passed time
+      // also look for direction variables and state
     }
     
-    public void moveRectWithAccel()
+    public void moveRectWithAccel( int passedSec )
     {
-      // update placement of rectangle when called
-    }
-  }
-  
-  public class ViewUtil extends View;
-  {
-    Canvas canvas;
-    
-    gWdith()
-    {
-      return canvas.getWidth();
-    }
-    
-    gHeight()
-    {
-      return canvas.getHeight();
+      // update placement of rectangle when called depending on the passed time
+      // also look for direction variables and state
+      // also do the calulation on accel. 
     }
   }
 }  
