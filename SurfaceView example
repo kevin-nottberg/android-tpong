@@ -12,13 +12,18 @@ import android.view.WindowManager;
 public class SurfaceViewTest extends Activity
 {
   FastRenderView renderView;
-  MovingObject moveRect;
-  viewUtil viewUtil;
+  MovingObjRect mRectOne;
+  Rect moveRect
+  float deltaTime;
+  String[] directionOpt = new Array[];
   
   public void onCreate( Bundle savedInstanceState )
   {
     super.onCreate( Bundle savedInstanceState )
     requestWindowFeature( Window.FEATURE_NO_TITLE );
+    // movingRect = new Rect();
+    // mRectOne = new MovingObjRect( 4, True, NONE );
+    // directionOpt = [UPRIGHT, UPRIGHT, DOWNRIGHT, DOWNLEFT, DOWN. UP];
     getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
     MovingObject moveRect = new Rect( (view.getWidth - 25), (view.getHieght -25), (renderView.getWidth + 25), (renderView.getHeight() + 25);
     renderView = new FastRenderView( this );
@@ -58,15 +63,18 @@ public class SurfaceViewTest extends Activity
     
     public void run()
     {
-      while(running)
+      long startTime = System.nanoTime();
+      while( running )
       {
+        deltaTime = ( System.nanoTime() - strtTime ) / 1000000000.0f;
+        startTime = System.nanoTime();
         if(!holder.getSurface().isValid())
           continue;
         Canvas canvas = holder.lockCanvas();
         canvas.drawRGB( 255, 0, 0 );
         holder.unlockCanvasandPost( canvas ;)
-        // rect.moveRectWithNoAccel( passedTime );
-        // rect.moveRectWithAccel( passedTime );
+        // mRectOne.moveRectWithNoAccel( deltaTime );
+        // mRectOne.moveRectWithAccel( deltaTime );
       }
     }
     
@@ -85,27 +93,30 @@ public class SurfaceViewTest extends Activity
     }
   }
   
-  public class MovingObjRect( movingRect, int moveRate, boolean moving, String direction ) 
+  public class MovingObjRect 
   {
-   public void MovingObjects()
+   public void MovingObjRect( int moveRate, boolean moving, String direction )
     {
       this.moveRate = moveRate;
-      this.movingRect = movingRect;
       this.moving = moving;
       this.direction = direction;
     }
     
-    public void moveRectNoAccel( int passedSec )
+    public void moveRectNoAccel( int passedTime )
     {
-      // update the placement of rectangle when called depending on the passed time
+      // update the placement of rectangle when called depending on the deltaTime
       // also look for direction variables and state
+      // xmove = moveRate * passedTime;
+      // ymove = moveRate * passedTime;
+      return // the update placement of x, y
     }
     
-    public void moveRectWithAccel( int passedSec )
+    public void moveRectWithAccel( int passedTime )
     {
-      // update placement of rectangle when called depending on the passed time
+      // update placement of rectangle when called depending on the deltaTime
       // also look for direction variables and state
-      // also do the calulation on accel. 
+      // do the added calculation on acceleration
+      return //the updated placement of x, y
     }
   }
 }  
