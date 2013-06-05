@@ -16,16 +16,20 @@ public class SurfaceViewTest extends Activity
   Rect moveRect
   float deltaTime;
   String[] directionOpt = new Array[];
+  int playerOnePoints;
+  int playerTwoPoints;
   
   public void onCreate( Bundle savedInstanceState )
   {
     super.onCreate( Bundle savedInstanceState )
     requestWindowFeature( Window.FEATURE_NO_TITLE );
-    // movingRect = new Rect();
-    // mRectOne = new MovingObjRect( 4, True, NONE );
-    // directionOpt = [UPRIGHT, UPRIGHT, DOWNRIGHT, DOWNLEFT, DOWN. UP];
+    // playerOnePoints = 0;
+    // playerTwoPoints = 0;
+    // moveRect = new Rect( 375, 615, 425, 665 );
+    // directionOpt = [ 'UPRIGHT', 'UPRIGHT', 'DOWNRIGHT', 'DOWNLEFT', 'DOWN', 'UP' ];
+    // randomDir = directionOpt.get( new Random().nextInt( direction.size() ) );
+    // mRectOne = new MovingObjRect( 2, True, randomDir );
     getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
-    MovingObject moveRect = new Rect( (view.getWidth - 25), (view.getHieght -25), (renderView.getWidth + 25), (renderView.getHeight() + 25);
     renderView = new FastRenderView( this );
     setContentView( renderView );
   }
@@ -73,6 +77,7 @@ public class SurfaceViewTest extends Activity
         Canvas canvas = holder.lockCanvas();
         canvas.drawRGB( 255, 0, 0 );
         holder.unlockCanvasandPost( canvas ;)
+        // mRectOne.collisionCheck();
         // mRectOne.moveRectWithNoAccel( deltaTime );
         // mRectOne.moveRectWithAccel( deltaTime );
       }
@@ -101,7 +106,7 @@ public class SurfaceViewTest extends Activity
       this.moving = moving;
       this.direction = direction;
       if ( direction == 'NONE' )
-        direction == 
+        Log.d( "KEVINMESSAGE", "Random direction code is not working properly" )
     }
     
     public void moveRectNoAccel( int passedTime )
@@ -119,6 +124,13 @@ public class SurfaceViewTest extends Activity
       // also look for direction variables and state
       // do the added calculation on acceleration
       return //the updated placement of x, y
+    }
+    
+    public void collisionCheck()
+    {
+      if ( moveRect.top <= 0 )
+        playerTwoPoints = playerTwoPoints++;
+      if ( moveRect.top ==   
     }
   }
 }  
