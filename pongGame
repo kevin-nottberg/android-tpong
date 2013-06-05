@@ -1,0 +1,267 @@
+package com.badlogic.androidgames; //depends on which package
+
+import android.app.Activty;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.os.Bundle;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.Window;
+import android.view.WindowManager;
+
+public class SurfaceViewTest extends Activity implements OnTouchListener
+{
+  // All global objects needed
+  FastRenderView renderView;
+  MovingObjRect mRectOne;
+  Rect moveRect
+  
+  // All global variables needed
+  String[] directionOpt = new Array[];
+  int playerOnePoints;
+	int playerTwoPoints;
+	int curPointPosXtwo;
+ 	int curPointPosYtwo;
+	int curPointPosXone;
+	int curPointPosYone;
+  float deltaTime;
+  
+  public void onCreate( Bundle savedInstanceState )
+  {
+    super.onCreate( Bundle savedInstanceState );
+    
+    // Working out the movingRect class
+    playerOnePoints = 0;
+    playerTwoPoints = 0;
+    moveRect = new Rect( 375, 615, 425, 665 );
+    directionOpt = [ 'UPRIGHT', 'UPRIGHT', 'DOWNRIGHT', 'DOWNLEFT', 'DOWN', 'UP' ];
+    String randomDir = directionOpt.get( new Random().nextInt( direction.size() ) );
+    mRectOne = new MovingObjRect( 2, True, randomDir );
+    
+    // Initilizing some starter variables
+    curPointPosXone = 400;
+  	curPointPosYone = 1180;
+		curPointPosXtwo = 400;
+		curPointPosYtwo = 25;
+    
+    // Calling fullscreen
+    requestWindowFeature( Window.FEATURE_NO_TITLE );
+    getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
+    
+    // Starting up the rendering
+    renderView = new FastRenderView( this );
+    renderView.setOnTouchListener( this );
+    setContentView( renderView );
+  }
+  
+  ublic boolean onTouch( View v, MotionEvent event )
+  {
+		int halfHeight = view.getHeight() / 2;
+		int maxCount = event.getPointerCount();
+		int action = MotionEventCompat.getActionMasked( event );
+		Log.d("KevinApp", "OnTouch: " + String.valueOf( action ));
+		for( int i = 0; i < maxCount; i++ )
+		{
+			//int mActivePointerId = event.getPointerId( i );
+			// int pointerIndex = event.findPointerIndex( mActivePointerId );
+			//int index = MotionEventCompat.getActionIndex( event );
+      
+			switch( action )
+			{
+			case MotionEvent.ACTION_DOWN:
+			case MotionEvent.ACTION_POINTER_DOWN:
+			case MotionEvent.ACTION_MOVE:
+				Log.d( "KevinApp", "OnTouch" );
+
+				if ( MotionEventCompat.getY( event, i ) < halfHeight )
+				{
+					curPointPosXtwo = (int) MotionEventCompat.getX( event, i );
+					// curPointPosYtwo = (int) MotionEventCompat.getY( event, i );
+					view.invalidate();
+				}
+        
+				if ( MotionEventCompat.getY( event, i ) > halfHeight )
+				{
+					curPointPosXone = (int) MotionEventCompat.getX( event, i );
+					// curPointPosYone = (int) MotionEventCompat.getY( event, i );
+				}
+			break;
+			}
+		}	
+		return true;
+	}
+  
+  protected void onResume()
+  {
+    super.onResume();
+    renderView.resume();
+  }
+  
+  protected void onPause()
+  {
+    super.onPause();
+    renderView.pause();
+  }  
+  
+  class FastRenderView extends SurfaceView implements Runnable 
+  {
+    Thread renderThread = null;
+    SurfaceHolder holder;
+    volatile boolean running = false;
+    Paint paint;
+    
+    public FastRenderView( Context context )
+    {
+      super( context );
+      holder = getHolder();
+      paint = new Paint();
+    }
+    
+    public void resume()
+    {
+      running = true;
+      renderThread = new Thread( this );
+      renderThread.start();
+    }
+    
+    public void run()
+    {
+      long startTime = System.nanoTime();
+      while( running )
+      {
+        // Setting up the time
+        deltaTime = ( System.nanoTime() - strtTime ) / 1000000000.0f;
+        startTime = System.nanoTime();
+        
+        // Starting the main rendering part of the thread
+        if(!holder.getSurface().isValid())
+          continue;
+        Canvas canvas = holder.lockCanvas();
+        canvas.drawRGB( 255, 255, 255 );
+        paint.setStyle( Style.FILL );
+        int width = canvas.getWidth();
+  		  int height = canvas.getWidth();
+        paint.setColor(Color.RED);
+  		  canvas.drawLine((width - width), height / 2, width, height / 2, paint);
+        
+        // Moving Rectangle block
+        paint.setColor( Color.BLUE );
+        canvas.drawRect( moveRect, paint) ;
+        
+        //Draw the paddles onto the canvas
+        paint.setColor(Color.BLUE);
+  		  canvas.drawRect((curPointPosXone - 100), (curPointPosYone - 25), (curPointPosXone + 100), (curPointPosYone + 25), paint);
+			  paint.setColor(Color.GREEN);
+			  canvas.drawRect((curPointPosXtwo - 100), (curPointPosYtwo - 25), (curPointPosXtwo + 100), (curPointPosYtwo + 25), paint);
+        
+        // Cleaning and re-orientating
+        holder.unlockCanvasandPost( canvas ;) 
+        mRectOne.collisionCheck();
+        mRectOne.moveRectWithNoAccel( deltaTime );
+      }
+    }
+    
+    public void pause() 
+    {
+      running = false;
+      while( true )
+      {
+        try {
+          renderThread.join();
+          return;
+        } catch ( InterruptedException e ) {
+          //retry
+        }
+      }
+    }
+  }
+  
+  public class MovingObjRect 
+  {
+  
+   public void MovingObjRect( int moveRate, boolean moving, String direction )
+    {
+      this.moveRate = moveRate;
+      this.moving = moving;
+      this.direction = direction;
+      if ( direction == null )
+        Log.d( "KEVINMESSAGE", "Random direction code is not working properly" );
+    }
+    
+    public void moveRectNoAccel( int passedTime )
+    {
+      // Gaining movement per second 
+      deltaMove = moveRate * passedTime;
+      
+      // Direction check and re-posistion block 
+      if ( direction == 'DOWN' )
+        moveRect.top = moveRect.top + deltaMove;
+        moveRect.bottom = moveRect.bottom + deltaMove;
+      
+      if ( direction == 'UP' )
+        moveRect.top = moveRect.top - deltaMove;
+        moveRect.bottom = moveRect.bottom - deltaMove;
+      
+      if ( direction == 'UPRIGHT' )  
+        moveRect.top = moveRect.top - deltaMove;
+        moveRect.right = moveRect.right + deltaMove;
+        moveRect.left = moveRect.left + deltaMove;
+        moveRect.bottom = moveRect.bottom + deltaMove;
+      
+      if ( direction == 'UPLEFT' )
+        moveRect.top = moveRect.top - deltaMove;
+        moveRect.right = moveRect.right - deltaMove;
+        moveRect.left = moveRect.left - deltaMove;
+        moveRect.bottom = moveRect.bottom - deltaMove;
+      
+      if ( direction == 'DOWNRIGHT' )
+        moveRect.top = moveRect.top + deltaMove;
+        moveRect.right = moveRect.right + deltaMove;
+        moveRect.left = moveRect.left + deltaMove;
+        moveRect.bottom = moveRect.bottom + deltaMove;
+      
+      if ( direction == 'DOWNLEFT' )
+        moveRect.top = moveRect.top + deltaMove;
+        moveRect.right = moveRect.right - deltaMove;
+        moveRect.left = moveRect.left - deltaMove;
+        moveRect.bottom = moveRect.bottom + deltaMove;
+    }
+    
+    public void moveRectWithAccel( int passedTime )
+    {
+      // update placement of rectangle when called depending on the deltaTime
+      // also look for direction variables and state
+      // do the added calculation on acceleration
+    }
+    
+    public void collisionCheck()
+    {
+      // Checking if the moving Rectangle has hit the top of the screen and rewarding points to the second player
+      if ( moveRect.top <= 0 )
+        playerTwoPoints = playerTwoPoints++;
+        // create function to restart the moveRect
+      
+      // Checking for if the paddle has been hit
+      if ( moveRect.top <=  50 ) 
+        direction = 'DOWN';
+        
+      // Checking if the movingRectangle has hit the bottom of the screen and rewarding points to first player  
+      if ( moveRect.Bottom >= 1280 )
+        playerOnePoints = playerOnePoints++;
+        
+      // Checking for if the bottom paddle has been hit.  
+      if ( moveRect.Bottom >= 1230 )
+        direction = 'UP';
+        
+      // Checking for the hitting of the sides of the screen and changind the direction  
+      if ( moveRect.Left <= 0 and direction == 'UP' )
+        direction = 'UPRIGHT';
+      if ( moveRect.Right >= 800 and direction == 'UP' )
+        direction = 'UPLEFT';
+      if ( moveRect.Left <= 0 and direction == 'DOWN' )
+        direction = 'DOWNRIGHT';
+      if ( moveRect.Right >= 800 and direction == 'DOWN' )
+        direction = 'DOWNLEFT';
+    }
+  }
+}  
