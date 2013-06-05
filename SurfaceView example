@@ -135,8 +135,12 @@ public class SurfaceViewTest extends Activity
         direction = DOWN; 
       if ( moveRect.Bottom >= 1280 )
         playerOnePoints = playerOnePoints++;
-     if ( moveRect.Bottom >= 1230 )
+      if ( moveRect.Bottom >= 1230 )
         direction = UP;
+      if ( moveRect.Left <= 0 )
+        direction = UPRIGHT;
+      if ( moveRect.Right >= 800 and direction == 'DOWN' )
+        direction = UPLEFT;
     }
   }
 }  
