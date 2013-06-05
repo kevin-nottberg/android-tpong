@@ -62,8 +62,8 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
 		Log.d("KevinApp", "OnTouch: " + String.valueOf( action ));
 		for( int i = 0; i < maxCount; i++ )
 		{
-			//int mActivePointerId = event.getPointerId(i);
-			// int pointerIndex = event.findPointerIndex(mActivePointerId);
+			//int mActivePointerId = event.getPointerId( i );
+			// int pointerIndex = event.findPointerIndex( mActivePointerId );
 			//int index = MotionEventCompat.getActionIndex( event );
       
 			switch( action )
@@ -184,8 +184,8 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
       this.moveRate = moveRate;
       this.moving = moving;
       this.direction = direction;
-      if ( direction == 'NONE' )
-        Log.d( "KEVINMESSAGE", "Random direction code is not working properly" )
+      if ( direction == null )
+        Log.d( "KEVINMESSAGE", "Random direction code is not working properly" );
     }
     
     public void moveRectNoAccel( int passedTime )
