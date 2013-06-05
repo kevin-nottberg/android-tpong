@@ -21,15 +21,21 @@ public class SurfaceViewTest extends Activity
   
   public void onCreate( Bundle savedInstanceState )
   {
-    super.onCreate( Bundle savedInstanceState )
+    super.onCreate( Bundle savedInstanceState );
+    
+    //Working out the movingRect class
+    playerOnePoints = 0;
+    playerTwoPoints = 0;
+    moveRect = new Rect( 375, 615, 425, 665 );
+    directionOpt = [ 'UPRIGHT', 'UPRIGHT', 'DOWNRIGHT', 'DOWNLEFT', 'DOWN', 'UP' ];
+    String randomDir = directionOpt.get( new Random().nextInt( direction.size() ) );
+    mRectOne = new MovingObjRect( 2, True, randomDir );
+    
+    //Calling fullscreen
     requestWindowFeature( Window.FEATURE_NO_TITLE );
-    // playerOnePoints = 0;
-    // playerTwoPoints = 0;
-    // moveRect = new Rect( 375, 615, 425, 665 );
-    // directionOpt = [ 'UPRIGHT', 'UPRIGHT', 'DOWNRIGHT', 'DOWNLEFT', 'DOWN', 'UP' ];
-    // String randomDir = directionOpt.get( new Random().nextInt( direction.size() ) );
-    // mRectOne = new MovingObjRect( 2, True, randomDir );
     getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
+    
+    //Starting up the rendering
     renderView = new FastRenderView( this );
     setContentView( renderView );
   }
@@ -46,7 +52,7 @@ public class SurfaceViewTest extends Activity
     renderView.pause();
   }  
   
-  class FastRenderView extends SurfaceVIew implements Runnable 
+  class FastRenderView extends SurfaceView implements Runnable 
   {
     Thread renderThread = null;
     SurfaceHolder holder;
@@ -70,14 +76,21 @@ public class SurfaceViewTest extends Activity
       long startTime = System.nanoTime();
       while( running )
       {
+        //Setting up the time
         deltaTime = ( System.nanoTime() - strtTime ) / 1000000000.0f;
         startTime = System.nanoTime();
+        
+        //Starting the main rendering part of the thread
         if(!holder.getSurface().isValid())
           continue;
         Canvas canvas = holder.lockCanvas();
         canvas.drawRGB( 255, 0, 0 );
+        //Draw the new moveRect onto canvas
+        //Draw the paddles onto the canvas
         holder.unlockCanvasandPost( canvas ;)
-        // mRectOne.collisionCheck();
+        
+        //Recall everything to re oreientate 
+        mRectOne.collisionCheck();
         // mRectOne.moveRectWithNoAccel( deltaTime );
         // mRectOne.moveRectWithAccel( deltaTime );
       }
@@ -113,9 +126,7 @@ public class SurfaceViewTest extends Activity
     {
       // update the placement of rectangle when called depending on the deltaTime
       // also look for direction variables and state
-      // xmove = moveRate * passedTime;
-      // ymove = moveRate * passedTime;
-      return // the update placement of x, y
+      // deltaMove = moveRate * passedTime;
     }
     
     public void moveRectWithAccel( int passedTime )
@@ -123,24 +134,36 @@ public class SurfaceViewTest extends Activity
       // update placement of rectangle when called depending on the deltaTime
       // also look for direction variables and state
       // do the added calculation on acceleration
-      return //the updated placement of x, y
     }
     
     public void collisionCheck()
     {
+      //Checking if the moving Rectangle has hit the top of the screen and rewarding points to the second player
       if ( moveRect.top <= 0 )
         playerTwoPoints = playerTwoPoints++;
         // create function to restart the moveRect
+      
+      //Checking for if the paddle has been hit
       if ( moveRect.top <=  50 ) 
-        direction = DOWN; 
+        direction = 'DOWN';
+        
+      //Checking if the movingRectangle has hit the bottom of the screen and rewarding points to first player  
       if ( moveRect.Bottom >= 1280 )
         playerOnePoints = playerOnePoints++;
+        
+      //Checking for if the bottom paddle has been hit.  
       if ( moveRect.Bottom >= 1230 )
-        direction = UP;
-      if ( moveRect.Left <= 0 )
-        direction = UPRIGHT;
+        direction = 'UP';
+        
+      //Checking for the hitting of the sides of the screen and changind the direction  
+      if ( moveRect.Left <= 0 and direction == 'UP' )
+        direction = 'UPRIGHT';
+      if ( moveRect.Right >= 800 and direction == 'UP' )
+        direction = 'UPLEFT';
+      if ( moveRect.Left <= 0 and direction == 'DOWN' )
+        direction = 'DOWNRIGHT';
       if ( moveRect.Right >= 800 and direction == 'DOWN' )
-        direction = UPLEFT;
+        direction = 'DOWNLEFT';
     }
   }
 }  
