@@ -89,9 +89,9 @@ public class SurfaceViewTest extends Activity
         //Draw the paddles onto the canvas
         holder.unlockCanvasandPost( canvas ;)
         
-        //Recall everything to re oreientate 
+        //Recall everything to re-oreientate 
         mRectOne.collisionCheck();
-        // mRectOne.moveRectWithNoAccel( deltaTime );
+        mRectOne.moveRectWithNoAccel( deltaTime );
         // mRectOne.moveRectWithAccel( deltaTime );
       }
     }
@@ -127,6 +127,23 @@ public class SurfaceViewTest extends Activity
       // update the placement of rectangle when called depending on the deltaTime
       // also look for direction variables and state
       // deltaMove = moveRate * passedTime;
+      
+      if ( direction == 'DOWN' )
+        moveRect.Bottom = moveRect.Bottom + deltaMove;
+      if ( direction == 'UP' )
+        moveRect.Top = moveRect.Top - deltaMove;
+      if ( direction == 'UPRIGHT' )  
+        moveRect.Top = moveRect.Top - deltaMove;
+        moveRect.Right = moveRect.Right - deltaMove;
+      if ( direction == 'UPLEFT' )
+        moveRect.Top = moveRect.Top - deltaMove;
+        moveReat.Left = moveRect.Left - deltaMove;
+      if ( direction == 'DOWNRIGHT' )
+        moveRect.Bottom = moveRect.Bottom + deltaMove;
+        moveRect.Right = moveRect.Right + deltaMove;
+      if ( direction == 'DOWNLEFT' )
+        moveRect.bottom = moveRect.Bottom + deltaMove;
+        moveRect.left = moveRect.Left - deltaMove;
     }
     
     public void moveRectWithAccel( int passedTime )
