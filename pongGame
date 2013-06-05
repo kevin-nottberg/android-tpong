@@ -40,7 +40,7 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
     
     // Initilizing some starter variables
 		curPointPosXone = 400;
-  	curPointPosYone = 1180;
+		curPointPosYone = 1180;
 		curPointPosXtwo = 400;
 		curPointPosYtwo = 25;
     
