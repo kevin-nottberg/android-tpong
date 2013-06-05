@@ -27,7 +27,7 @@ public class SurfaceViewTest extends Activity
     // playerTwoPoints = 0;
     // moveRect = new Rect( 375, 615, 425, 665 );
     // directionOpt = [ 'UPRIGHT', 'UPRIGHT', 'DOWNRIGHT', 'DOWNLEFT', 'DOWN', 'UP' ];
-    // randomDir = directionOpt.get( new Random().nextInt( direction.size() ) );
+    // String randomDir = directionOpt.get( new Random().nextInt( direction.size() ) );
     // mRectOne = new MovingObjRect( 2, True, randomDir );
     getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
     renderView = new FastRenderView( this );
@@ -130,7 +130,13 @@ public class SurfaceViewTest extends Activity
     {
       if ( moveRect.top <= 0 )
         playerTwoPoints = playerTwoPoints++;
-      if ( moveRect.top ==   
+        // create function to restart the moveRect
+      if ( moveRect.top <=  50 ) 
+        direction = DOWN; 
+      if ( moveRect.Bottom >= 1280 )
+        playerOnePoints = playerOnePoints++;
+     if ( moveRect.Bottom >= 1230 )
+        direction = UP;
     }
   }
 }  
