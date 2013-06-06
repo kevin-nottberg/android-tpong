@@ -2,22 +2,17 @@ package com.example.ponggame;
 
 import java.lang.reflect.Array;
 import java.util.Random;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
 import android.view.Menu;
-
-//Imports are not complete
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.os.Bundle;
 import android.preference.PreferenceActivity.Header;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -29,265 +24,262 @@ import android.view.WindowManager;
 
 public class MainActivity extends Activity implements OnTouchListener
 {
-// All global objects needed
-FastRenderView renderView;
-MovingObjRect mRectOne;
-Rect moveRect;
-String direction;
+ // All global objects needed
+	FastRenderView renderView;
+	MovingObjRect mRectOne;
+	Rect moveRect;
+	String direction;
 
-// All global variables needed
-String[] directionOpt;
-int playerOnePoints;
-int playerTwoPoints;
-String playerOO;
-String playerTT;
-int curPointPosXtwo;
-int curPointPosYtwo;
-int curPointPosXone;
-int curPointPosYone;
-float deltaTime;
+	// All global variables needed
+	String[] directionOpt;
+	int playerOnePoints;
+	int playerTwoPoints;
+	String playerOO;
+	String playerTT;
+	int curPointPosXtwo;
+	int curPointPosYtwo;
+	int curPointPosXone;
+	int curPointPosYone;
+	float deltaTime;
 
-public void onCreate( Bundle savedInstanceState )
-{
- super.onCreate( savedInstanceState );
+	public void onCreate( Bundle savedInstanceState )
+	{
+		super.onCreate( savedInstanceState );
  
- // Initilizing things for the MovingObjRect Class
- playerOnePoints = 0;
- playerTwoPoints = 0;
- playerOO = playerOnePoints.toString();
- playerTT = playerTwoPoint.toString();
- moveRect = new Rect( 375, 615, 425, 665 );
- directionOpt = new [ "UPRIGHT", "UPRIGHT", "DOWNRIGHT", "DOWNLEFT", "DOWN", "UP" ];
- String randomDir = directionOpt.get( new Random().nextInt( directionOpt.length ) );
- mRectOne = new MovingObjRect( 2, True, randomDir );
+		// Initilizing things for the MovingObjRect Class
+		playerOnePoints = 0;
+		playerTwoPoints = 0;
+		playerOO = playerOnePoints.toString();
+		playerTT = playerTwoPoint.toString();
+		moveRect = new Rect( 375, 615, 425, 665 );
+		directionOpt = new [ "UPRIGHT", "UPRIGHT", "DOWNRIGHT", "DOWNLEFT", "DOWN", "UP" ];
+		String randomDir = directionOpt.get( new Random().nextInt( directionOpt.length ) );
+		mRectOne = new MovingObjRect( 2, True, randomDir );
  
- // Initilizing starter variables for the paddles
- curPointPosXone = 400;
- curPointPosYone = 1180;
- curPointPosXtwo = 400;
- curPointPosYtwo = 25;
+		// Initilizing starter variables for the paddles
+		curPointPosXone = 400;
+		curPointPosYone = 1180;
+		curPointPosXtwo = 400;
+		curPointPosYtwo = 25;
  
- // Requesting the fullscreen for the activity 
- requestWindowFeature( Window.FEATURE_NO_TITLE );
- getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
+		// Requesting the fullscreen for the activity 
+		requestWindowFeature( Window.FEATURE_NO_TITLE );
+		getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
  
- // Starting up the rendering
- renderView = new FastRenderView( this );
- renderView.setOnTouchListener( this );
- setContentView( renderView );
-}
+		// Starting up the rendering
+		renderView = new FastRenderView( this );
+		renderView.setOnTouchListener( this );
+		setContentView( renderView );
+	}
 
-public boolean onTouch( View v, MotionEvent event )
-{
- // Initilizing some varibles for multi-touch
- int halfHeight = renderView.getHeight() / 2;
- int maxCount = event.getPointerCount();
- int action = MotionEventCompat.getActionMasked( event );
- Log.d("KevinApp", "OnTouch: " + String.valueOf( action ));
- for ( int i = 0; i < maxCount; i++ )
- {
-   // int mActivePointerId = event.getPointerId( i );
-   // int pointerIndex = event.findPointerIndex( mActivePointerId );
-   // int index = MotionEventCompat.getActionIndex( event );
+	public boolean onTouch( View v, MotionEvent event )
+	{
+		// Initilizing some varibles for multi-touch
+		int halfHeight = renderView.getHeight() / 2;
+		int maxCount = event.getPointerCount();
+		int action = MotionEventCompat.getActionMasked( event );
+		Log.d("KevinApp", "OnTouch: " + String.valueOf( action ));
+		for ( int i = 0; i < maxCount; i++ )
+		{
+			// int mActivePointerId = event.getPointerId( i );
+			// int pointerIndex = event.findPointerIndex( mActivePointerId );
+			// int index = MotionEventCompat.getActionIndex( event );
    
-   // Reacting to the finger taps
-   switch( action )
-   {
-     case MotionEvent.ACTION_DOWN:
-     case MotionEvent.ACTION_POINTER_DOWN:
-     case MotionEvent.ACTION_MOVE:
-     Log.d( "KevinApp", "OnTouch" );
-       if ( MotionEventCompat.getY( event, i ) < halfHeight )
-       {
-           curPointPosXtwo = (int) MotionEventCompat.getX( event, i );
-           curPointPosYtwo = (int) MotionEventCompat.getY( event, i );
-       }
-       if ( MotionEventCompat.getY( event, i ) > halfHeight )
-       {
-           curPointPosXone = (int) MotionEventCompat.getX( event, i );
-        // curPointPosYone = (int) MotionEventCompat.getY( event, i );
-       }
-     break;
-   }
- }  
- return true;
-}
+			// Reacting to the finger taps
+			switch( action )
+			{
+				case MotionEvent.ACTION_DOWN:
+				case MotionEvent.ACTION_POINTER_DOWN:
+				case MotionEvent.ACTION_MOVE:
+					if ( MotionEventCompat.getY( event, i ) < halfHeight )
+					{
+						curPointPosXtwo = (int) MotionEventCompat.getX( event, i );
+						curPointPosYtwo = (int) MotionEventCompat.getY( event, i );
+					}
+					if ( MotionEventCompat.getY( event, i ) > halfHeight )
+					{
+						curPointPosXone = (int) MotionEventCompat.getX( event, i );
+						// curPointPosYone = (int) MotionEventCompat.getY( event, i );
+					}
+					break;
+			}
+		}	
+		return true;
+	}
 
-protected void onResume()
-{
- super.onResume();
- renderView.resume();
-}
+	protected void onResume()
+	{
+		super.onResume();
+		renderView.resume();
+	}
 
-protected void onPause()
-{
- super.onPause();
- renderView.pause();
-}  
+	protected void onPause()
+	{
+		super.onPause();
+		renderView.pause();
+	}	  
 
-class FastRenderView extends SurfaceView implements Runnable 
-{
- Thread renderThread = null;
- SurfaceHolder holder;
- volatile boolean running = false;
- Paint paint;
+	class FastRenderView extends SurfaceView implements Runnable 
+	{
+		Thread renderThread = null;
+		SurfaceHolder holder;
+		volatile boolean running = false;
+		Paint paint;
  
- public FastRenderView( Context context )
- {
-   super( context );
-   holder = getHolder();
-   paint = new Paint();
- }
+		public FastRenderView( Context context )
+		{
+			super( context );
+			holder = getHolder();
+			paint = new Paint();
+		}
  
- public void resume()
- {
-   running = true;
-   renderThread = new Thread( this );
-   renderThread.start();
- }
+		public void resume()
+		{
+			running = true;
+			renderThread = new Thread( this );
+			renderThread.start();
+		}	
  
- public void run()
- {
-   long startTime = System.nanoTime();
-   while( running )
-   {
-     // Setting up the time
-     deltaTime = ( System.nanoTime() - startTime ) / 1000000000.0f;
-     startTime = System.nanoTime();
+		public void run()
+		{
+			long startTime = System.nanoTime();
+			while( running )
+			{
+				// Setting up the time
+				deltaTime = ( System.nanoTime() - startTime ) / 1000000000.0f;
+				startTime = System.nanoTime();
      
-     // Starting the main rendering part of the thread
-     if( !holder.getSurface().isValid() )
-       continue;
-     Canvas canvas = holder.lockCanvas();
-     canvas.drawRGB( 255, 255, 255 );
-     paint.setStyle( Style.FILL );
-     int width = canvas.getWidth();
-     int height = canvas.getWidth();
-     paint.setColor( Color.RED );
-     canvas.drawLine( (width - width), height / 2, width, height / 2, paint );
+				// Starting the main rendering part of the thread
+				if( !holder.getSurface().isValid() )
+					continue;
+				Canvas canvas = holder.lockCanvas();
+				canvas.drawRGB( 255, 255, 255 );
+				paint.setStyle( Style.FILL );
+				int width = canvas.getWidth();
+				int height = canvas.getWidth();
+				paint.setColor( Color.RED );
+				canvas.drawLine( (width - width), height / 2, width, height / 2, paint );
      
-     // Moving Rectangle block
-     paint.setColor( Color.BLUE );
-     canvas.drawRect( moveRect, paint ) ;
+				// Moving Rectangle block
+				paint.setColor( Color.BLUE );
+				canvas.drawRect( moveRect, paint ) ;
      
-     //Draw the paddles onto the canvas
-     paint.setColor( Color.BLUE );
-     canvas.drawRect( (curPointPosXone - 100), (curPointPosYone - 25), (curPointPosXone + 100), (curPointPosYone + 25), paint );
-     // canvas.drawText( playerOO ); 
-     paint.setColor( Color.GREEN );
-     canvas.drawRect( (curPointPosXtwo - 100), (curPointPosYtwo - 25), (curPointPosXtwo + 100), (curPointPosYtwo + 25), paint );
-     // canvas.drawText( playerTT );
+				//Draw the paddles onto the canvas
+				paint.setColor( Color.BLUE );
+				canvas.drawRect( (curPointPosXone - 100), (curPointPosYone - 25), (curPointPosXone + 100), (curPointPosYone + 25), paint );
+				// canvas.drawText( playerOO ); 
+				paint.setColor( Color.GREEN );
+				canvas.drawRect( (curPointPosXtwo - 100), (curPointPosYtwo - 25), (curPointPosXtwo + 100), (curPointPosYtwo + 25), paint );
+				// canvas.drawText( playerTT );
      
-     // Cleaning and re-orientating
-     holder.unlockCanvasandPost( canvas ;) 
-     mRectOne.collisionCheck();
-     mRectOne.moveRectNoAccel( deltaTime );
-   }
- }
+				// Cleaning and re-orientating
+				holder.unlockCanvasAndPost( canvas );
+				mRectOne.collisionCheck();
+				mRectOne.moveRectNoAccel( deltaTime );
+			}
+		}
  
- public void pause() 
- {
-   running = false;
-   while( true )
-   {
-     try {
-       renderThread.join();
-       return;
-     } catch ( InterruptedException e ) {
-       //retry
-     }
-   }
- }
-}
+		public void pause() 
+		{
+			running = false;
+			while( true )
+			{
+				try {
+					renderThread.join();
+					return;
+				} catch ( InterruptedException e ) {
+					//retry
+				}
+			}
+		}
+	}
 
-public class MovingObjRect 
-{
-public MovingObjRect( int moveRate, boolean moving, String direction )
- {
-   this.moveRate = moveRate;
-   this.moving = moving;
-   this.direction = direction;
-   if ( direction == null )
-     Log.d( "KEVINMESSAGE", "Random direction code is not working properly" );
- }
+	public class MovingObjRect 
+	{
+		public MovingObjRect( int moveRate, boolean moving, String direction )
+		{
+			this.moveRate = moveRate;
+			this.moving = moving;
+			this.direction = direction;
+		}
  
- public void moveRectNoAccel( float passedTime )
- {
-   // Gaining movement per second 
-   deltaMove = moveRate * passedTime;
+		public void moveRectNoAccel( float passedTime )
+		{
+			// Gaining movement per second 
+			deltaMove = moveRate * passedTime;
    
-   // Direction check and re-posistion block 
-   if ( direction == 'DOWN' )
-     moveRect.top = moveRect.top + deltaMove;
-     moveRect.bottom = moveRect.bottom + deltaMove;
+			// Direction check and re-posistion block 
+			if ( direction == 'DOWN' )
+				moveRect.top = moveRect.top + deltaMove;
+				moveRect.bottom = moveRect.bottom + deltaMove;
    
-   if ( direction == 'UP' )
-     moveRect.top = moveRect.top - deltaMove;
-     moveRect.bottom = moveRect.bottom - deltaMove;
+			if ( direction == 'UP' )
+				moveRect.top = moveRect.top - deltaMove;
+				moveRect.bottom = moveRect.bottom - deltaMove;
    
-   if ( direction == 'UPRIGHT' )  
-     moveRect.top = moveRect.top - deltaMove;
-     moveRect.right = moveRect.right + deltaMove;
-     moveRect.left = moveRect.left + deltaMove;
-     moveRect.bottom = moveRect.bottom + deltaMove;
+			if ( direction == 'UPRIGHT' )  
+				moveRect.top = moveRect.top - deltaMove;
+				moveRect.right = moveRect.right + deltaMove;
+				moveRect.left = moveRect.left + deltaMove;
+				moveRect.bottom = moveRect.bottom + deltaMove;
    
-   if ( direction == 'UPLEFT' )
-     moveRect.top = moveRect.top - deltaMove;
-     moveRect.right = moveRect.right - deltaMove;
-     moveRect.left = moveRect.left - deltaMove;
-     moveRect.bottom = moveRect.bottom - deltaMove;
+			if ( direction == 'UPLEFT' )
+				moveRect.top = moveRect.top - deltaMove;
+				moveRect.right = moveRect.right - deltaMove;
+				moveRect.left = moveRect.left - deltaMove;
+				moveRect.bottom = moveRect.bottom - deltaMove;
      
-   if ( direction == "DOWNRIGHT" )
-     moveRect.top = moveRect.top + deltaMove;
-     moveRect.right = moveRect.right + deltaMove;
-     moveRect.left = moveRect.left + deltaMove;
-     moveRect.bottom = moveRect.bottom + deltaMove;
+			if ( direction == "DOWNRIGHT" )
+				moveRect.top = moveRect.top + deltaMove;
+				moveRect.right = moveRect.right + deltaMove;
+				moveRect.left = moveRect.left + deltaMove;
+				moveRect.bottom = moveRect.bottom + deltaMove;
    
-   if ( direction == "DOWNLEFT" )
-     moveRect.top = moveRect.top + deltaMove;
-     moveRect.right = moveRect.right - deltaMove;
-     moveRect.left = moveRect.left - deltaMove;
-     moveRect.bottom = moveRect.bottom + deltaMove;
- }
+			if ( direction == "DOWNLEFT" )
+				moveRect.top = moveRect.top + deltaMove;
+				moveRect.right = moveRect.right - deltaMove;
+				moveRect.left = moveRect.left - deltaMove;
+				moveRect.bottom = moveRect.bottom + deltaMove;
+		}
  
- public void moveRectWithAccel( int passedTime )
- {
-   // update placement of rectangle when called depending on the deltaTime
-   // also look for direction variables and state
-   // do the added calculation on acceleration
- }
+		public void moveRectWithAccel( int passedTime )
+		{
+			// update placement of rectangle when called depending on the deltaTime
+			// also look for direction variables and state
+			// do the added calculation on acceleration
+		}
  
- public void collisionCheck()
- {
-   // Checking if the moving Rectangle has hit the top of the screen and rewarding points to the second player
-   if ( moveRect.top <= 0 )
-     playerTwoPoints = playerTwoPoints++;
-     playerTT = ( String ) playerTwoPoints;
-     // create function to restart the moveRect
+		public void collisionCheck()
+		{
+			// Checking if the moving Rectangle has hit the top of the screen and rewarding points to the second player
+			if ( moveRect.top <= 0 )
+				playerTwoPoints = playerTwoPoints++;
+				playerTT = ( String ) playerTwoPoints;
+				// create function to restart the moveRect
    
-   // Checking for if the paddle has been hit
-   if ( moveRect.top <=  50 ) 
-     direction = 'DOWN';
+				// Checking for if the paddle has been hit
+				if ( moveRect.top <=  50 ) 
+					direction = 'DOWN';
      
-   // Checking if the movingRectangle has hit the bottom of the screen and rewarding points to first player  
-   if ( moveRect.bottom >= 1280 )
-     playerOnePoints = playerOnePoints++;
-     playerOO = ( String ) playerOnePoints;
-     // Create a function to restart the moveRect
+				// Checking if the movingRectangle has hit the bottom of the screen and rewarding points to first player  
+				if ( moveRect.bottom >= 1280 )
+					playerOnePoints = playerOnePoints++;
+				playerOO = ( String ) playerOnePoints;
+				// Create a function to restart the moveRect
      
-   // Checking for if the bottom paddle has been hit.  
-   if ( moveRect.bottom >= 1230 )
-     direction = 'UP';
+				// Checking for if the bottom paddle has been hit.  
+				if ( moveRect.bottom >= 1230 )
+					direction = 'UP';
      
-   // Checking for the hitting of the sides of the screen and changing the direction  
-   if ( moveRect.left <= 0 and direction == 'UP' )
-     direction = 'UPRIGHT';
-   if ( moveRect.right >= 800 and direction == 'UP' )
-     direction = 'UPLEFT';
-   if ( moveRect.left <= 0 and direction == 'DOWN' )
-     direction = 'DOWNRIGHT';
-   if ( moveRect.right >= 800 and direction == 'DOWN' )
-     direction = 'DOWNLEFT';
- }
-}
+				// Checking for the hitting of the sides of the screen and changing the direction  
+				if ( moveRect.left <= 0 and direction == 'UP' )
+					direction = 'UPRIGHT';
+				if ( moveRect.right >= 800 and direction == 'UP' )
+					direction = 'UPLEFT';
+				if ( moveRect.left <= 0 and direction == 'DOWN' )
+					direction = 'DOWNRIGHT';
+				if ( moveRect.right >= 800 and direction == 'DOWN' )
+					direction = 'DOWNLEFT';
+		}	
+	}
 }  
