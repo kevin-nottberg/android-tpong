@@ -21,6 +21,8 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
   String[] directionOpt = new Array[];
   int playerOnePoints;
   int playerTwoPoints;
+  String playerOO;
+  String playerTT;
   int curPointPosXtwo;
   int curPointPosYtwo;
   int curPointPosXone;
@@ -34,6 +36,8 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
     // Initilizing things for the MovingObjRect Class
     playerOnePoints = 0;
     playerTwoPoints = 0;
+    playerOO = ( String ) playerOnePoints;
+    playerTT = ( String ) playerTwoPoints;
     moveRect = new Rect( 375, 615, 425, 665 );
     directionOpt = [ 'UPRIGHT', 'UPRIGHT', 'DOWNRIGHT', 'DOWNLEFT', 'DOWN', 'UP' ];
     String randomDir = directionOpt.get( new Random().nextInt( direction.size() ) );
@@ -151,8 +155,10 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
         //Draw the paddles onto the canvas
         paint.setColor( Color.BLUE );
         canvas.drawRect( (curPointPosXone - 100), (curPointPosYone - 25), (curPointPosXone + 100), (curPointPosYone + 25), paint );
+        // canvas.drawText( playerOO ); 
         paint.setColor( Color.GREEN );
         canvas.drawRect( (curPointPosXtwo - 100), (curPointPosYtwo - 25), (curPointPosXtwo + 100), (curPointPosYtwo + 25), paint );
+        // canvas.drawText( playerTT );
         
         // Cleaning and re-orientating
         holder.unlockCanvasandPost( canvas ;) 
@@ -239,6 +245,7 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
       // Checking if the moving Rectangle has hit the top of the screen and rewarding points to the second player
       if ( moveRect.top <= 0 )
         playerTwoPoints = playerTwoPoints++;
+        playerTT = ( String ) playerTwoPoints;
         // create function to restart the moveRect
       
       // Checking for if the paddle has been hit
@@ -248,6 +255,8 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
       // Checking if the movingRectangle has hit the bottom of the screen and rewarding points to first player  
       if ( moveRect.Bottom >= 1280 )
         playerOnePoints = playerOnePoints++;
+        playerOO = ( String ) playerOnePoints;
+        // Create a function to restart the moveRect
         
       // Checking for if the bottom paddle has been hit.  
       if ( moveRect.Bottom >= 1230 )
