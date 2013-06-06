@@ -84,7 +84,7 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
               curPointPosXone = (int) MotionEventCompat.getX( event, i );
            // curPointPosYone = (int) MotionEventCompat.getY( event, i );
           }
-          break;
+      break;
       }
     }	
     return true;
