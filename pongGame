@@ -18,14 +18,14 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
   Rect moveRect;
   
   // All global variables needed
-	String[] directionOpt = new Array[];
-	int playerOnePoints;
-	int playerTwoPoints;
-	int curPointPosXtwo;
-	int curPointPosYtwo;
-	int curPointPosXone;
-	int curPointPosYone;
-	float deltaTime;
+  String[] directionOpt = new Array[];
+  int playerOnePoints;
+  int playerTwoPoints;
+  int curPointPosXtwo;
+  int curPointPosYtwo;
+  int curPointPosXone;
+  int curPointPosYone;
+  float deltaTime;
   
   public void onCreate( Bundle savedInstanceState )
   {
@@ -40,10 +40,10 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
     mRectOne = new MovingObjRect( 2, True, randomDir );
     
     // Initilizing some starter variables
-		curPointPosXone = 400;
-		curPointPosYone = 1180;
-		curPointPosXtwo = 400;
-		curPointPosYtwo = 25;
+    curPointPosXone = 400;
+    curPointPosYone = 1180;
+    curPointPosXtwo = 400;
+    curPointPosYtwo = 25;
     
     // Calling fullscreen
     requestWindowFeature( Window.FEATURE_NO_TITLE );
