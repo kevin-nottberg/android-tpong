@@ -57,38 +57,37 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
   
   public boolean onTouch( View v, MotionEvent event )
   {
-		int halfHeight = view.getHeight() / 2;
-		int maxCount = event.getPointerCount();
-		int action = MotionEventCompat.getActionMasked( event );
-		Log.d("KevinApp", "OnTouch: " + String.valueOf( action ));
-		for( int i = 0; i < maxCount; i++ )
+    int halfHeight = view.getHeight() / 2;
+    int maxCount = event.getPointerCount();
+    int action = MotionEventCompat.getActionMasked( event );
+    Log.d("KevinApp", "OnTouch: " + String.valueOf( action ));
+    for( int i = 0; i < maxCount; i++ )
 		{
-			// int mActivePointerId = event.getPointerId( i );
-			// int pointerIndex = event.findPointerIndex( mActivePointerId );
-			// int index = MotionEventCompat.getActionIndex( event );
+      // int mActivePointerId = event.getPointerId( i );
+      // int pointerIndex = event.findPointerIndex( mActivePointerId );
+      // int index = MotionEventCompat.getActionIndex( event );
       
       // The changing of the finger statuses; 
-			switch( action )
+      switch( action )
 			{
-			case MotionEvent.ACTION_DOWN:
-			case MotionEvent.ACTION_POINTER_DOWN:
-			case MotionEvent.ACTION_MOVE:
-				Log.d( "KevinApp", "OnTouch" );
-				if ( MotionEventCompat.getY( event, i ) < halfHeight )
+      case MotionEvent.ACTION_DOWN:
+      case MotionEvent.ACTION_POINTER_DOWN:
+      case MotionEvent.ACTION_MOVE:
+        Log.d( "KevinApp", "OnTouch" );
+        if ( MotionEventCompat.getY( event, i ) < halfHeight )
 				{
-					curPointPosXtwo = (int) MotionEventCompat.getX( event, i );
-					// curPointPosYtwo = (int) MotionEventCompat.getY( event, i );
-					view.invalidate();
+          curPointPosXtwo = (int) MotionEventCompat.getX( event, i );
+          // curPointPosYtwo = (int) MotionEventCompat.getY( event, i );
 				}
-				if ( MotionEventCompat.getY( event, i ) > halfHeight )
+        if ( MotionEventCompat.getY( event, i ) > halfHeight )
 				{
-					curPointPosXone = (int) MotionEventCompat.getX( event, i );
-					// curPointPosYone = (int) MotionEventCompat.getY( event, i );
+          curPointPosXone = (int) MotionEventCompat.getX( event, i );
+          // curPointPosYone = (int) MotionEventCompat.getY( event, i );
 				}
-			break;
+      break;
 			}
 		}	
-		return true;
+    return true;
 	}
   
   protected void onResume()
