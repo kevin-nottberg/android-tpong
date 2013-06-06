@@ -84,7 +84,7 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
               curPointPosXone = (int) MotionEventCompat.getX( event, i );
            // curPointPosYone = (int) MotionEventCompat.getY( event, i );
           }
-      break;
+        break;
       }
     }	
     return true;
@@ -139,9 +139,9 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
         canvas.drawRGB( 255, 255, 255 );
         paint.setStyle( Style.FILL );
         int width = canvas.getWidth();
-  		  int height = canvas.getWidth();
+        int height = canvas.getWidth();
         paint.setColor( Color.RED );
-  		  canvas.drawLine( (width - width), height / 2, width, height / 2, paint );
+        canvas.drawLine( (width - width), height / 2, width, height / 2, paint );
         
         // Moving Rectangle block
         paint.setColor( Color.BLUE );
@@ -149,9 +149,9 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
         
         //Draw the paddles onto the canvas
         paint.setColor( Color.BLUE );
-  		  canvas.drawRect( (curPointPosXone - 100), (curPointPosYone - 25), (curPointPosXone + 100), (curPointPosYone + 25), paint );
-			  paint.setColor( Color.GREEN );
-			  canvas.drawRect( (curPointPosXtwo - 100), (curPointPosYtwo - 25), (curPointPosXtwo + 100), (curPointPosYtwo + 25), paint );
+        canvas.drawRect( (curPointPosXone - 100), (curPointPosYone - 25), (curPointPosXone + 100), (curPointPosYone + 25), paint );
+        paint.setColor( Color.GREEN );
+        canvas.drawRect( (curPointPosXtwo - 100), (curPointPosYtwo - 25), (curPointPosXtwo + 100), (curPointPosYtwo + 25), paint );
         
         // Cleaning and re-orientating
         holder.unlockCanvasandPost( canvas ;) 
