@@ -1,5 +1,6 @@
 package com.badlogic.androidgames; //depends on which package
 
+// Imports are not complete
 import android.app.Activty;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,7 +15,7 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
   // All global objects needed
   FastRenderView renderView;
   MovingObjRect mRectOne;
-  Rect moveRect
+  Rect moveRect;
   
   // All global variables needed
 	String[] directionOpt = new Array[];
@@ -54,7 +55,7 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
     setContentView( renderView );
   }
   
-  ublic boolean onTouch( View v, MotionEvent event )
+  public boolean onTouch( View v, MotionEvent event )
   {
 		int halfHeight = view.getHeight() / 2;
 		int maxCount = event.getPointerCount();
@@ -62,24 +63,23 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
 		Log.d("KevinApp", "OnTouch: " + String.valueOf( action ));
 		for( int i = 0; i < maxCount; i++ )
 		{
-			//int mActivePointerId = event.getPointerId( i );
+			// int mActivePointerId = event.getPointerId( i );
 			// int pointerIndex = event.findPointerIndex( mActivePointerId );
-			//int index = MotionEventCompat.getActionIndex( event );
+			// int index = MotionEventCompat.getActionIndex( event );
       
+      // The changing of the finger statuses; 
 			switch( action )
 			{
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_POINTER_DOWN:
 			case MotionEvent.ACTION_MOVE:
 				Log.d( "KevinApp", "OnTouch" );
-
 				if ( MotionEventCompat.getY( event, i ) < halfHeight )
 				{
 					curPointPosXtwo = (int) MotionEventCompat.getX( event, i );
 					// curPointPosYtwo = (int) MotionEventCompat.getY( event, i );
 					view.invalidate();
 				}
-        
 				if ( MotionEventCompat.getY( event, i ) > halfHeight )
 				{
 					curPointPosXone = (int) MotionEventCompat.getX( event, i );
@@ -134,25 +134,25 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
         startTime = System.nanoTime();
         
         // Starting the main rendering part of the thread
-        if(!holder.getSurface().isValid())
+        if( !holder.getSurface().isValid() )
           continue;
         Canvas canvas = holder.lockCanvas();
         canvas.drawRGB( 255, 255, 255 );
         paint.setStyle( Style.FILL );
         int width = canvas.getWidth();
   		  int height = canvas.getWidth();
-        paint.setColor(Color.RED);
-  		  canvas.drawLine((width - width), height / 2, width, height / 2, paint);
+        paint.setColor( Color.RED );
+  		  canvas.drawLine( (width - width), height / 2, width, height / 2, paint );
         
         // Moving Rectangle block
         paint.setColor( Color.BLUE );
-        canvas.drawRect( moveRect, paint) ;
+        canvas.drawRect( moveRect, paint ) ;
         
         //Draw the paddles onto the canvas
-        paint.setColor(Color.BLUE);
-  		  canvas.drawRect((curPointPosXone - 100), (curPointPosYone - 25), (curPointPosXone + 100), (curPointPosYone + 25), paint);
-			  paint.setColor(Color.GREEN);
-			  canvas.drawRect((curPointPosXtwo - 100), (curPointPosYtwo - 25), (curPointPosXtwo + 100), (curPointPosYtwo + 25), paint);
+        paint.setColor( Color.BLUE );
+  		  canvas.drawRect( (curPointPosXone - 100), (curPointPosYone - 25), (curPointPosXone + 100), (curPointPosYone + 25), paint );
+			  paint.setColor( Color.GREEN );
+			  canvas.drawRect( (curPointPosXtwo - 100), (curPointPosYtwo - 25), (curPointPosXtwo + 100), (curPointPosYtwo + 25), paint );
         
         // Cleaning and re-orientating
         holder.unlockCanvasandPost( canvas ;) 
