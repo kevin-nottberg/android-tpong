@@ -31,7 +31,7 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
   {
     super.onCreate( Bundle savedInstanceState );
     
-    // Working out the movingRect class
+    // Initilizing things for the MovingObjRect Class
     playerOnePoints = 0;
     playerTwoPoints = 0;
     moveRect = new Rect( 375, 615, 425, 665 );
@@ -39,13 +39,13 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
     String randomDir = directionOpt.get( new Random().nextInt( direction.size() ) );
     mRectOne = new MovingObjRect( 2, True, randomDir );
     
-    // Initilizing some starter variables
+    // Initilizing starter variables for the paddles
     curPointPosXone = 400;
     curPointPosYone = 1180;
     curPointPosXtwo = 400;
     curPointPosYtwo = 25;
     
-    // Calling fullscreen
+    // Requesting the fullscreen for the activity 
     requestWindowFeature( Window.FEATURE_NO_TITLE );
     getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
     
@@ -57,6 +57,7 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
   
   public boolean onTouch( View v, MotionEvent event )
   {
+    // Initilizing some varibles for multi-touch
     int halfHeight = view.getHeight() / 2;
     int maxCount = event.getPointerCount();
     int action = MotionEventCompat.getActionMasked( event );
@@ -67,7 +68,7 @@ public class SurfaceViewTest extends Activity implements OnTouchListener
       // int pointerIndex = event.findPointerIndex( mActivePointerId );
       // int index = MotionEventCompat.getActionIndex( event );
       
-      // The changing of the finger statuses; 
+      // Reacting to the finger taps
       switch( action )
       {
         case MotionEvent.ACTION_DOWN:
