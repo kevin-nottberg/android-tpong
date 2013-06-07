@@ -1,19 +1,16 @@
 package com.example.ponggame;
 
-import java.lang.reflect.Array;
 import java.util.Random;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
-import android.view.Menu;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.preference.PreferenceActivity.Header;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,20 +19,18 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class MainActivity extends Activity implements OnTouchListener
+public class PongGame extends Activity implements OnTouchListener
 {
  // All global objects needed
 	FastRenderView renderView;
 	MovingObjRect mRectOne;
 	Rect moveRect;
-	String direction;
 
 	// All global variables needed
-	String[] directionOpt;
 	int playerOnePoints;
 	int playerTwoPoints;
-	String playerOO;
-	String playerTT;
+	// String playerOO;
+	// String playerTT;
 	int curPointPosXtwo;
 	int curPointPosYtwo;
 	int curPointPosXone;
@@ -49,12 +44,11 @@ public class MainActivity extends Activity implements OnTouchListener
 		// Initilizing things for the MovingObjRect Class
 		playerOnePoints = 0;
 		playerTwoPoints = 0;
-		playerOO = playerOnePoints.toString();
-		playerTT = playerTwoPoint.toString();
+		// playerOO = playerOnePoints.toString();
+		// playerTT = playerTwoPoints.toString();
 		moveRect = new Rect( 375, 615, 425, 665 );
-		directionOpt = new [ "UPRIGHT", "UPRIGHT", "DOWNRIGHT", "DOWNLEFT", "DOWN", "UP" ];
-		String randomDir = directionOpt.get( new Random().nextInt( directionOpt.length ) );
-		mRectOne = new MovingObjRect( 2, True, randomDir );
+		mRectOne = new MovingObjRect( 2, true );
+		mRectOne.startDir();
  
 		// Initilizing starter variables for the paddles
 		curPointPosXone = 400;
@@ -70,6 +64,9 @@ public class MainActivity extends Activity implements OnTouchListener
 		renderView = new FastRenderView( this );
 		renderView.setOnTouchListener( this );
 		setContentView( renderView );
+		
+		//LogFiles
+		Log.d("KevinMess", "OnCreate !");
 	}
 
 	public boolean onTouch( View v, MotionEvent event )
@@ -131,6 +128,7 @@ public class MainActivity extends Activity implements OnTouchListener
 			super( context );
 			holder = getHolder();
 			paint = new Paint();
+			Log.d("KevinMess", "Consructor works!");
 		}
  
 		public void resume()
@@ -142,9 +140,11 @@ public class MainActivity extends Activity implements OnTouchListener
  
 		public void run()
 		{
+			Log.d("KevinMess", "B loop");
 			long startTime = System.nanoTime();
 			while( running )
 			{
+				Log.d("KevinMess", "Loop!");
 				// Setting up the time
 				deltaTime = ( System.nanoTime() - startTime ) / 1000000000.0f;
 				startTime = System.nanoTime();
@@ -196,46 +196,49 @@ public class MainActivity extends Activity implements OnTouchListener
 
 	public class MovingObjRect 
 	{
-		public MovingObjRect( int moveRate, boolean moving, String direction )
+		public String direction;
+		public int moveRate;
+		public boolean moving;
+		public MovingObjRect( int moveRate, boolean moving )
 		{
+			Log.d("KevinMess","MOR");
 			this.moveRate = moveRate;
 			this.moving = moving;
-			this.direction = direction;
 		}
  
 		public void moveRectNoAccel( float passedTime )
 		{
 			// Gaining movement per second 
-			deltaMove = moveRate * passedTime;
+			int deltaMove = (int) (( int ) moveRate * passedTime);
    
 			// Direction check and re-posistion block 
-			if ( direction == 'DOWN' )
+			if ( direction == "down" )
 				moveRect.top = moveRect.top + deltaMove;
 				moveRect.bottom = moveRect.bottom + deltaMove;
    
-			if ( direction == 'UP' )
+			if ( direction == "up" )
 				moveRect.top = moveRect.top - deltaMove;
 				moveRect.bottom = moveRect.bottom - deltaMove;
    
-			if ( direction == 'UPRIGHT' )  
+			if ( direction == "upRight" )  
 				moveRect.top = moveRect.top - deltaMove;
 				moveRect.right = moveRect.right + deltaMove;
 				moveRect.left = moveRect.left + deltaMove;
 				moveRect.bottom = moveRect.bottom + deltaMove;
    
-			if ( direction == 'UPLEFT' )
+			if ( direction == "upLeft" )
 				moveRect.top = moveRect.top - deltaMove;
 				moveRect.right = moveRect.right - deltaMove;
 				moveRect.left = moveRect.left - deltaMove;
 				moveRect.bottom = moveRect.bottom - deltaMove;
      
-			if ( direction == "DOWNRIGHT" )
+			if ( direction == "downRight" )
 				moveRect.top = moveRect.top + deltaMove;
 				moveRect.right = moveRect.right + deltaMove;
 				moveRect.left = moveRect.left + deltaMove;
 				moveRect.bottom = moveRect.bottom + deltaMove;
    
-			if ( direction == "DOWNLEFT" )
+			if ( direction == "downLeft" )
 				moveRect.top = moveRect.top + deltaMove;
 				moveRect.right = moveRect.right - deltaMove;
 				moveRect.left = moveRect.left - deltaMove;
@@ -254,32 +257,50 @@ public class MainActivity extends Activity implements OnTouchListener
 			// Checking if the moving Rectangle has hit the top of the screen and rewarding points to the second player
 			if ( moveRect.top <= 0 )
 				playerTwoPoints = playerTwoPoints++;
-				playerTT = ( String ) playerTwoPoints;
+				// playerTT = ( String ) playerTwoPoints;
 				// create function to restart the moveRect
    
-				// Checking for if the paddle has been hit
-				if ( moveRect.top <=  50 ) 
-					direction = 'DOWN';
+			// Checking for if the paddle has been hit
+			if ( moveRect.top <=  50 ) 
+				direction = "down";
      
-				// Checking if the movingRectangle has hit the bottom of the screen and rewarding points to first player  
-				if ( moveRect.bottom >= 1280 )
-					playerOnePoints = playerOnePoints++;
-				playerOO = ( String ) playerOnePoints;
+			// Checking if the movingRectangle has hit the bottom of the screen and rewarding points to first player  
+			if ( moveRect.bottom >= 1280 )
+				playerOnePoints = playerOnePoints++;
+				// playerOO = ( String ) playerOnePoints;
 				// Create a function to restart the moveRect
      
-				// Checking for if the bottom paddle has been hit.  
-				if ( moveRect.bottom >= 1230 )
-					direction = 'UP';
+			// Checking for if the bottom paddle has been hit.  
+			if ( moveRect.bottom >= 1230 )
+				direction = "up";
      
-				// Checking for the hitting of the sides of the screen and changing the direction  
-				if ( moveRect.left <= 0 and direction == 'UP' )
-					direction = 'UPRIGHT';
-				if ( moveRect.right >= 800 and direction == 'UP' )
-					direction = 'UPLEFT';
-				if ( moveRect.left <= 0 and direction == 'DOWN' )
-					direction = 'DOWNRIGHT';
-				if ( moveRect.right >= 800 and direction == 'DOWN' )
-					direction = 'DOWNLEFT';
-		}	
+			// Checking for the hitting of the sides of the screen and changing the direction  
+			if ( moveRect.left <= 0 && direction == "up")
+				direction = "upRight";
+			if ( moveRect.right >= 800 && direction == "up" )
+				direction = "upLeft";
+			if ( moveRect.left <= 0 && direction == "down" )
+				direction = "downRight";
+			if ( moveRect.right >= 800 && direction == "down" )
+				direction = "downLeft";
+		}
+		
+		public void startDir()
+		{
+			Random randomGen;
+			randomGen = new Random();
+			String[] directArray;
+			directArray = new String[5];
+			directArray[0] = "upLeft";
+			directArray[1] = "upRight";
+			directArray[2] = "downLeft";
+			directArray[3] = "downRight";
+			directArray[4] = "down";
+			directArray[5] = "up";
+			int ranIndex; 
+			ranIndex = randomGen.nextInt(directArray.length);
+			direction = directArray[ranIndex];
+			Log.d("KevinMess", "DirStart");
+		}
 	}
-}  
+}
