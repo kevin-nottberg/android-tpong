@@ -52,18 +52,20 @@ public class PongGame extends Activity implements OnTouchListener
 		super.onCreate( savedInstanceState );
  
 		// Initilizing things for the MovingObjRect Class
-		Log.d("KevinMsss", "MoveObjRect ");
+		Log.d("KevinMess", "MoveObjRect ");
 		playerOnePoints = 0;
 		playerTwoPoints = 0;
 		// playerOO = playerOnePoints.toString();
 		// playerTT = playerTwoPoints.toString();
 		moveRect = new Rect( 375, 615, 425, 665 );
-		mRectOne = new MovingObjRect( 2, true );
+		mRectOne = new MovingObjRect( 1, true );
 		mRectOne.startDir();
+		
+		// Rect starting values
 		rectLeft = 375;
-		rectBottom = 615;
+		rectBottom = 665;
 		rectRight = 425;
-		rectTop = 665;
+		rectTop = 615;
  
 		// Initilizing starter variables for the paddles
 		curPointPosXone = 400;
@@ -80,7 +82,6 @@ public class PongGame extends Activity implements OnTouchListener
 		Log.d("KevinMess", "OnCreate render");
 		renderView = new FastRenderView( this );
 		renderView.setOnTouchListener( this );
-		renderView.run();
 		setContentView( renderView );
 		
 		//LogFiles
@@ -161,16 +162,16 @@ public class PongGame extends Activity implements OnTouchListener
  
 		public void run()
 		{
-			int looper = 0;
 			Log.d("KevinMess", "B loop");
 			long startTime = System.nanoTime();
 			while( running )
 			{
+				mRectOne.collisionCheck();
 				Log.d("KevinMess", "Loop!");
+				
 				// Setting up the time
 				deltaTime = ( System.nanoTime() - startTime ) * 1000000000.0f;
-				startTime = System.nanoTime();
-     
+				
 				// Starting the main rendering part of the thread
 				if( !holder.getSurface().isValid() )
 					continue;
@@ -184,10 +185,8 @@ public class PongGame extends Activity implements OnTouchListener
      
 				// Moving Rectangle block
 				paint.setColor( Color.BLUE );
-				canvas.drawRect( rectLeft, rectBottom, rectRight, rectTop, paint );
-				//if ( looper > 1 )
-					//canvas.drawRect( pastLeft, pastBottom, pastRight, pastTop, paint );
-					//mRectOne.DiffuseRect();
+				canvas.drawRect( rectLeft, rectTop, rectRight, rectBottom, paint );
+				
 				//Debug logs
 				Log.d( "RectLeftStat", Integer.toString(rectLeft) );
 				Log.d( "RectRightStat", Integer.toString(rectRight) );
@@ -207,7 +206,6 @@ public class PongGame extends Activity implements OnTouchListener
 				holder.unlockCanvasAndPost( canvas );
 				mRectOne.collisionCheck();
 				mRectOne.moveRectNoAccel( deltaTime );
-				looper++;
 			}
 		}
  
@@ -237,6 +235,7 @@ public class PongGame extends Activity implements OnTouchListener
 			Log.d("KevinMess","MOR");
 			this.moveRate = moveRate;
 			this.moving = moving;
+			direction = null;
 		}
  
 		public void moveRectNoAccel( float passedTime )
@@ -244,39 +243,104 @@ public class PongGame extends Activity implements OnTouchListener
 			Log.d("KevinMess", "moveRectNoAcccel");
 			// Gaining movement per second 
 			int deltaMove = (int) (( int ) moveRate * passedTime);
-   
+			Log.d("directions", direction);
+			
 			// Direction check and re-posistion block 
 			if ( direction == "down" )
+			{
 				rectTop = rectTop + deltaMove;
 				rectBottom = rectBottom + deltaMove;
-   
-			if ( direction == "up" )
-				rectTop = rectTop - deltaMove;
-				rectBottom = rectBottom - deltaMove;
-   
+			}
+				
 			if ( direction == "upRight" )  
+			{
 				rectTop = rectTop - deltaMove;
 				rectRight = rectRight + deltaMove;
 				rectLeft = rectLeft + deltaMove;
 				rectBottom = rectBottom + deltaMove;
-   
+			}	
+				
 			if ( direction == "upLeft" )
+			{
 				rectTop = rectTop - deltaMove;
 				rectRight = rectRight - deltaMove;
 				rectLeft = rectLeft - deltaMove;
 				rectBottom = rectBottom - deltaMove;
-     
+			}	
+				
 			if ( direction == "downRight" )
+			{
 				rectTop = rectTop + deltaMove;
 				rectRight = rectRight + deltaMove;
 				rectLeft = rectLeft + deltaMove;
 				rectBottom = rectBottom + deltaMove;
-   
+			}
+				
 			if ( direction == "downLeft" )
+			{
 				rectTop = rectTop + deltaMove;
 				rectRight = rectRight - deltaMove;
 				rectLeft = rectLeft - deltaMove;
 				rectBottom = rectBottom + deltaMove;
+			}
+			
+			if ( direction == "up" )
+			{	
+				rectTop = rectTop - deltaMove;
+				rectBottom = rectBottom - deltaMove;
+			}
+		}	
+			
+		public void collisionCheck()
+		{
+			Log.d("KevinMess", "collCheck");
+			// Checking if the moving Rectangle has hit the top of the screen and rewarding points to the second player
+			if ( rectTop <= 0 )
+			{	
+				playerTwoPoints = playerTwoPoints++;
+				direction = "down";
+				// playerTT = ( String ) playerTwoPoints;
+				// create function to restart the moveRect
+			}
+			
+			// Checking for if the paddle has been hit
+			if ( rectTop <=  50 ) 
+			{	
+				direction = "down";
+			}
+			
+			// Checking if the movingRectangle has hit the bottom of the screen and rewarding points to first player  
+			if ( rectBottom >= 1280 )
+			{	
+				playerOnePoints = playerOnePoints++;
+				// playerOO = ( String ) playerOnePoints;	
+				// Create a function to restart the moveRect
+				direction = "up";
+			}
+			
+			// Checking for if the bottom paddle has been hit.  
+			if ( rectBottom >= 1230 )
+			{	
+				direction = "up";
+			}
+			
+			// Checking for the hitting of the sides of the screen and changing the direction  
+			if ( rectLeft <= 0 && direction == "up")
+			{
+				direction = "upRight";
+			}
+			if ( rectRight >= 800 && direction == "up" )
+			{
+				direction = "upLeft";
+			}
+			if ( rectLeft <= 0 && direction == "down" )
+			{	
+				direction = "downRight";
+			}
+			if ( rectRight >= 800 && direction == "down" )
+			{	
+				direction = "downLeft";
+			}	
 		}
  
 		public void moveRectWithAccel( int passedTime )
@@ -285,55 +349,15 @@ public class PongGame extends Activity implements OnTouchListener
 			// also look for direction variables and state
 			// do the added calculation on acceleration
 		}
- 
-		public void collisionCheck()
-		{
-			Log.d("KevinMess", "collCheck");
-			// Checking if the moving Rectangle has hit the top of the screen and rewarding points to the second player
-			if ( rectTop <= 0 )
-				playerTwoPoints = playerTwoPoints++;
-				// playerTT = ( String ) playerTwoPoints;
-				// create function to restart the moveRect
-   
-			// Checking for if the paddle has been hit
-			if ( rectTop <=  50 ) 
-				direction = "down";
-     
-			// Checking if the movingRectangle has hit the bottom of the screen and rewarding points to first player  
-			if ( rectBottom >= 1280 )
-				playerOnePoints = playerOnePoints++;
-				// playerOO = ( String ) playerOnePoints;
-				// Create a function to restart the moveRect
-     
-			// Checking for if the bottom paddle has been hit.  
-			if ( rectBottom >= 1230 )
-				direction = "up";
-     
-			// Checking for the hitting of the sides of the screen and changing the direction  
-			if ( rectLeft <= 0 && direction == "up")
-				direction = "upRight";
-			if ( rectRight >= 800 && direction == "up" )
-				direction = "upLeft";
-			if ( rectLeft <= 0 && direction == "down" )
-				direction = "downRight";
-			if ( rectLeft >= 800 && direction == "down" )
-				direction = "downLeft";
-		}
+		
 		
 		public void startDir()
 		{
-			String[] dirList = { "upLeft", "upRight", "up", "downLeft", "downRight", "down" };
-			Random r = new Random();
-			direction = dirList[ r.nextInt( dirList.length ) ];
-			Log.d("directions", direction);
-		}
-		
-		public void DiffuseRect()
-		{
-			rectTop = pastTop;
-			rectBottom = pastBottom;
-			rectLeft = pastLeft;
-			rectRight = pastRight;
+			//String[] dirList = { "upLeft", "upRight", "up", "downLeft", "downRight", "down" };
+			//Random r = new Random();
+			//.direction = dirList[ r.nextInt( dirList.length ) ];
+			//Log.d("directions", direction);
+			direction = "down";
 		}
 	}
 }
