@@ -117,7 +117,7 @@ public class PongGame extends Activity implements OnTouchListener
 						curPointPosXone = (int) MotionEventCompat.getX( event, i );
 						// curPointPosYone = (int) MotionEventCompat.getY( event, i );
 					}
-					break;
+			break;
 			}
 		}	
 		return true;
