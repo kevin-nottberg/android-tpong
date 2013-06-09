@@ -1,0 +1,10 @@
+mRectOne.pasRect( rectLeft, rectBottom, rectRight, rectTop );
+Rect moveRect = new Rect( rectLeft, rectBottom, rectRight, rectTop ); 
+paint.setColor( Color.RED );
+canvas.drawRect( moveRect, paint);
+Rect coverRect = new Rect( pastLeft, pastBottom, pastRight, pastTop );
+paint.setColor( Color.WHITE );
+canvas.drawRect( coverRect, paint);
+
+// Call rect change values and re-write direction code.
+// Make a couple paint objects so the thread loop might run faster
