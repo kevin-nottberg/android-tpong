@@ -1,4 +1,3 @@
-
 package com.example.ponggame;
 
 import java.util.Random;
@@ -186,8 +185,13 @@ public class MainActivity extends Activity implements OnTouchListener
 				canvas.drawLine( 0, height / 2, width, height / 2, paint );
      
 				// Moving Rectangle block
+				mRectOne.setPastRect();
 				paint.setColor( Color.BLUE );
-				canvas.drawRect( rectLeft, rectTop, rectRight, rectBottom, paint );
+				Rect moveRect = new Rect( rectLeft, rectBottom, rectRight, rectTop );
+				canvas.drawRect( moveRect, paint );
+				paint.setColor( Color.WHITE );
+				Rect pastRect = new Rect( pastLeft, pastBottom, pastRight, pastTop );
+				canvas.drawRect( pastRect, paint );
 
 				//Debug logs
 				Log.d( "RectLeftStat", Integer.toString(rectLeft) );
@@ -366,7 +370,16 @@ public class MainActivity extends Activity implements OnTouchListener
 			//Random r = new Random();
 			//.direction = dirList[ r.nextInt( dirList.length ) ];
 			//Log.d("directions", direction);
-			direction = "down";
+			//direction = "down";
+		}
+		
+		public void setPastRect( dir )
+		{
+			rectRight = pastRight;
+			rectLeft = pastLeft;
+			rectTop = pastTop;
+			rectBottom = pastBottom;
+			dir = pastDir;
 		}
 	}
 }
