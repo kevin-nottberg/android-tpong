@@ -46,7 +46,11 @@ public class MainActivity extends Activity implements OnTouchListener
 	int pastBottom;
 	int pastRight;
 	int pastLeft;
-	public String direction;
+	String direction;
+	boolean bottomWorking;
+	boolean topWorking;
+	boolean rightWorking;
+	boolean leftWorking;
 	
 	public void onCreate( Bundle savedInstanceState )
 	{
@@ -60,6 +64,7 @@ public class MainActivity extends Activity implements OnTouchListener
 		// playerTT = playerTwoPoints.toString();
 		mRectOne = new MovingObjRect( 4, true );
 		direction = null;
+		direction = 
 		mRectOne.startDir();
 		
 		// Rect starting values
@@ -165,6 +170,7 @@ public class MainActivity extends Activity implements OnTouchListener
 		{
 			Log.d( "KevinMess", "B loop" );
 			long startTime = System.nanoTime();
+			int looper;
 			while( running )
 			{
 				mRectOne.collisionCheck();
@@ -189,9 +195,13 @@ public class MainActivity extends Activity implements OnTouchListener
 				paint.setColor( Color.BLUE );
 				Rect moveRect = new Rect( rectLeft, rectBottom, rectRight, rectTop );
 				canvas.drawRect( moveRect, paint );
-				paint.setColor( Color.WHITE );
-				Rect pastRect = new Rect( pastLeft, pastBottom, pastRight, pastTop );
-				canvas.drawRect( pastRect, paint );
+				
+				if ( looper <= 1 )
+				{
+					paint.setColor( Color.WHITE );
+					Rect pastRect = new Rect( pastLeft, pastBottom, pastRight, pastTop );
+					canvas.drawRect( pastRect, paint );
+				}
 
 				//Debug logs
 				Log.d( "RectLeftStat", Integer.toString( rectLeft ) );
@@ -200,6 +210,10 @@ public class MainActivity extends Activity implements OnTouchListener
 				Log.d( "RectTopStat", Integer.toString( rectTop ) );
 				Log.d( "KevinMess", Float.toString( deltaTime ) );
 				Log.d( "directions1", direction );
+				Log.d( "incrementWorking", Boolean.toString( rightWorking ) );
+				Log.d( "incrementWorking", Boolean.toString( leftWorking ) );
+				Log.d( "incrementWorking", Boolean.toString( bottomWorking ) );
+				Log.d( "incrementWorking", Boolean.toString( topWorking ) );
 				
 				//Draw the paddles onto the canvas
 				paint.setColor( Color.BLUE );
@@ -219,7 +233,8 @@ public class MainActivity extends Activity implements OnTouchListener
 				} catch (InterruptedException e) {
 					mRectOne.collisionCheck();
 				 	mRectOne.moveRectNoAccel( deltaTime );
-				}	
+				}
+				looper++;
 			}
 		}
  
@@ -389,22 +404,30 @@ public class MainActivity extends Activity implements OnTouchListener
 			if ( deltaMove == ( rectRight - pastRight ) )
 			{
 				rightWorking = true;
+			} else {
+				rightWorking = false;
 			}
 			
 			if ( deltaMove == ( rectLeft - pastLeft ) )
 			{
 				leftWorking = true;
+			} else {
+				leftWorking = false;
 			}
 			
 			if ( deltaMove == ( rectBottom - pastBottom ) )
 			{
+				bottomWorking = true;
+			} else {
 				bottomWorking = true;
 			}
 			
 			if ( deltaMove == ( rectTop - pastTop ) )
 			{
 				topWorking = true;
-			{
+			} else {
+				topWorking = false;
+			}
 		}
 	}
 }
