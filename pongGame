@@ -46,7 +46,15 @@ public class MainActivity extends Activity implements OnTouchListener
 	int pastBottom;
 	int pastRight;
 	int pastLeft;
-	String direction;
+	
+	int direction;
+	int UPRIGHT;
+	int UPLEFT;
+	int DOWNLEFT;
+	int DOWNRIGHT;
+	int DOWN;
+	int UP;
+	
 	boolean bottomWorking;
 	boolean topWorking;
 	boolean rightWorking;
@@ -62,9 +70,16 @@ public class MainActivity extends Activity implements OnTouchListener
 		playerTwoPoints = 0;
 		// playerOO = playerOnePoints.toString();
 		// playerTT = playerTwoPoints.toString();
-		mRectOne = new MovingObjRect( 4, true );
-		direction = null;
-		mRectOne.startDir();
+		
+		mRectOne = new MovingObjRect( 4.0, true );
+		
+		direction = 1;
+		DOWN = 1;
+		UP = 2;
+		UPRIGHT = 3;
+		UPLEFT = 4;
+		DOWNRIGHT = 5;
+		DOWNLEFT = 6;
 		
 		// Rect starting values
 		rectLeft = 375;
@@ -202,12 +217,12 @@ public class MainActivity extends Activity implements OnTouchListener
 				}
 
 				// Debug logs
-				Log.d( "RectLeftStat", Integer.toString( rectLeft ) );
-				Log.d( "RectRightStat", Integer.toString( rectRight ) );
-				Log.d( "RectBottomStat", Integer.toString( rectBottom ) );
-				Log.d( "RectTopStat", Integer.toString( rectTop ) );
+				Log.d( "RectLeftStat", Float.toString( rectLeft ) );
+				Log.d( "RectRightStat", Float.toString( rectRight ) );
+				Log.d( "RectBottomStat", Float.toString( rectBottom ) );
+				Log.d( "RectTopStat", Float.toString( rectTop ) );
 				Log.d( "KevinMess", Float.toString( deltaTime ) );
-				Log.d( "directions1", direction );
+				Log.d( "directions1", Integer.toString( direction ) );
 				Log.d( "incrementWorking", Boolean.toString( rightWorking ) );
 				Log.d( "incrementWorking", Boolean.toString( leftWorking ) );
 				Log.d( "incrementWorking", Boolean.toString( bottomWorking ) );
@@ -253,9 +268,9 @@ public class MainActivity extends Activity implements OnTouchListener
 
 	public class MovingObjRect 
 	{
-		public int moveRate;
+		pulbic float moveRate;
 		public boolean moving;
-		public MovingObjRect( int moveRate, boolean moving )
+		public MovingObjRect( float moveRate, boolean moving )
 		{
 			Log.d( "KevinMess","MOR" );
 			this.moveRate = moveRate;
@@ -266,20 +281,20 @@ public class MainActivity extends Activity implements OnTouchListener
 		{
 			Log.d("KevinMess", "moveRectNoAcccel");
 			// Gaining movement per second 
-			int deltaMove = (int) (( int ) moveRate * passedTime);
-			Log.d( "MoveRate", Integer.toString( deltaMove ) );
-			Log.d( "directions2", direction );
+			float deltaMove = ( moveRate * passedTime );
+			Log.d( "MoveRate", Float.toString( deltaMove ) );
+			Log.d( "directions2", Integer.toString( direction ) );
 			
-			mRectOne.setPastRect( direction );
+			mRectOne.setPastRect();
 			
 			// Direction check and re-posistion block 
-			if ( direction == "down" )
+			if ( direction == DOWN )
 			{
 				rectTop = rectTop + deltaMove;
 				rectBottom = rectBottom + deltaMove;
 			}
 
-			if ( direction == "upRight" )  
+			if ( direction == UPRIGHT )  
 			{
 				rectTop = rectTop - deltaMove;
 				rectRight = rectRight + deltaMove;
@@ -287,7 +302,7 @@ public class MainActivity extends Activity implements OnTouchListener
 				rectBottom = rectBottom + deltaMove;
 			}	
 
-			if ( direction == "upLeft" )
+			if ( direction == UPLEFT )
 			{
 				rectTop = rectTop - deltaMove;
 				rectRight = rectRight - deltaMove;
@@ -295,7 +310,7 @@ public class MainActivity extends Activity implements OnTouchListener
 				rectBottom = rectBottom - deltaMove;
 			}	
 
-			if ( direction == "downRight" )
+			if ( direction == DOWNRIGHT )
 			{
 				rectTop = rectTop + deltaMove;
 				rectRight = rectRight + deltaMove;
@@ -303,7 +318,7 @@ public class MainActivity extends Activity implements OnTouchListener
 				rectBottom = rectBottom + deltaMove;
 			}
 
-			if ( direction == "downLeft" )
+			if ( direction == DOWNLEFT )
 			{
 				rectTop = rectTop + deltaMove;
 				rectRight = rectRight - deltaMove;
@@ -311,7 +326,7 @@ public class MainActivity extends Activity implements OnTouchListener
 				rectBottom = rectBottom + deltaMove;
 			}
 
-			if ( direction == "up" )
+			if ( direction == UP )
 			{	
 				rectTop = rectTop - deltaMove;
 				rectBottom = rectBottom - deltaMove;
@@ -323,51 +338,51 @@ public class MainActivity extends Activity implements OnTouchListener
 		{
 			Log.d("KevinMess", "collCheck");
 			// Checking if the moving Rectangle has hit the top of the screen and rewarding points to the second player
-			if ( rectTop <= 0 )
+			if ( rectTop <= 0.0f )
 			{	
 				playerTwoPoints = playerTwoPoints++;
-				direction = "down";
+				direction = DOWN;
 				// playerTT = ( String ) playerTwoPoints;
 				// create function to restart the moveRect
 			}
 
 			// Checking for if the paddle has been hit
-			if ( rectTop <=  50 ) 
+			if ( rectTop <=  50.0f ) 
 			{	
-				direction = "down";
+				direction = DOWN;
 			}
 
 			// Checking if the movingRectangle has hit the bottom of the screen and rewarding points to first player  
-			if ( rectBottom >= 1280 )
+			if ( rectBottom >= 1280.0f )
 			{	
 				playerOnePoints = playerOnePoints++;
 				// playerOO = ( String ) playerOnePoints;	
 				// Create a function to restart the moveRect
-				direction = "up";
+				direction = UP;
 			}
 
 			// Checking for if the bottom paddle has been hit.  
-			if ( rectBottom >= 1230 )
+			if ( rectBottom >= 1230.0f )
 			{	
-				direction = "up";
+				direction = UP;
 			}
 
 			// Checking for the hitting of the sides of the screen and changing the direction  
-			if ( rectLeft <= 0 && direction == "up")
+			if ( rectLeft <= 0.0f && direction == UP)
 			{
-				direction = "upRight";
+				direction = UPRIGHT;
 			}
-			if ( rectRight >= 800 && direction == "up" )
+			if ( rectRight >= 800.0f && direction == UP )
 			{
-				direction = "upLeft";
+				direction = UPLEFT;
 			}
-			if ( rectLeft <= 0 && direction == "down" )
+			if ( rectLeft <= 0.0f && direction == DOWN )
 			{	
-				direction = "downRight";
+				direction = DOWNRIGHT;
 			}
-			if ( rectRight >= 800 && direction == "down" )
+			if ( rectRight >= 800.0f && direction == DOWN )
 			{	
-				direction = "downLeft";
+				direction = DOWNLEFT;
 			}	
 		}
  
@@ -376,16 +391,6 @@ public class MainActivity extends Activity implements OnTouchListener
 			// update placement of rectangle when called depending on the deltaTime
 			// also look for direction variables and state
 			// do the added calculation on acceleration
-		}
-
-
-		public void startDir()
-		{
-			// Assigning random direction
-			String[] dirList = { "upLeft", "upRight", "up", "downLeft", "downRight", "down" };
-			Random r = new Random();
-			direction = dirList[ r.nextInt( dirList.length ) ];
-			Log.d( "directions", direction );
 		}
 		
 		public void setPastRect()
