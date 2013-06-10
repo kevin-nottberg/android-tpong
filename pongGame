@@ -385,8 +385,23 @@ public class MainActivity extends Activity implements OnTouchListener
 		{
 			if ( deltaMove == ( rectRight - pastRight ) )
 			{
-			
+				Rightworking = true;
 			}
+			
+			if ( deltaMove == ( rectLeft - pastLeft ) )
+			{
+				Leftworking = true;
+			}
+			
+			if ( deltaMove == ( rectBottom - pastBottom ) )
+			{
+				Bottomworking = true;
+			}
+			
+			if ( deltaMove == ( rectTop - pastTop ) )
+			{
+				Topworking = ture;
+			{
 		}
 	}
 }
