@@ -64,7 +64,6 @@ public class MainActivity extends Activity implements OnTouchListener
 		// playerTT = playerTwoPoints.toString();
 		mRectOne = new MovingObjRect( 4, true );
 		direction = null;
-		direction = 
 		mRectOne.startDir();
 		
 		// Rect starting values
@@ -261,7 +260,6 @@ public class MainActivity extends Activity implements OnTouchListener
 			Log.d( "KevinMess","MOR" );
 			this.moveRate = moveRate;
 			this.moving = moving;
-			direction = null;
 		}
  
 		public void moveRectNoAccel( float passedTime )
