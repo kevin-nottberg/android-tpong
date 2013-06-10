@@ -58,7 +58,6 @@ public class MainActivity extends Activity implements OnTouchListener
 		playerTwoPoints = 0;
 		// playerOO = playerOnePoints.toString();
 		// playerTT = playerTwoPoints.toString();
-		moveRect = new Rect( 375, 615, 425, 665 );
 		mRectOne = new MovingObjRect( 1, true );
 		mRectOne.startDir();
 
@@ -185,7 +184,6 @@ public class MainActivity extends Activity implements OnTouchListener
 				canvas.drawLine( 0, height / 2, width, height / 2, paint );
      
 				// Moving Rectangle block
-				mRectOne.setPastRect();
 				paint.setColor( Color.BLUE );
 				Rect moveRect = new Rect( rectLeft, rectBottom, rectRight, rectTop );
 				canvas.drawRect( moveRect, paint );
@@ -257,7 +255,9 @@ public class MainActivity extends Activity implements OnTouchListener
 			int deltaMove = (int) (( int ) moveRate * passedTime);
 			Log.d( "MoveRate", Integer.toString(deltaMove) );
 			Log.d( "directions", direction );
-
+			
+			mRectOne.setPastRect();
+			
 			// Direction check and re-posistion block 
 			if ( direction == "down" )
 			{
@@ -302,6 +302,7 @@ public class MainActivity extends Activity implements OnTouchListener
 				rectTop = rectTop - deltaMove;
 				rectBottom = rectBottom - deltaMove;
 			}
+			
 		}	
 
 		public void collisionCheck()
@@ -373,13 +374,12 @@ public class MainActivity extends Activity implements OnTouchListener
 			//direction = "down";
 		}
 		
-		public void setPastRect( dir )
+		public void setPastRect()
 		{
 			rectRight = pastRight;
 			rectLeft = pastLeft;
 			rectTop = pastTop;
 			rectBottom = pastBottom;
-			dir = pastDir;
 		}
 	}
 }
