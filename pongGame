@@ -237,7 +237,6 @@ public class MainActivity extends Activity implements OnTouchListener
 
 	public class MovingObjRect 
 	{
-		;
 		public int moveRate;
 		public boolean moving;
 		public MovingObjRect( int moveRate, boolean moving )
@@ -369,7 +368,7 @@ public class MainActivity extends Activity implements OnTouchListener
 		{
 			//String[] dirList = { "upLeft", "upRight", "up", "downLeft", "downRight", "down" };
 			//Random r = new Random();
-			//.direction = dirList[ r.nextInt( dirList.length ) ];
+			//direction = dirList[ r.nextInt( dirList.length ) ];
 			//Log.d("directions", direction);
 			//direction = "down";
 		}
@@ -380,6 +379,14 @@ public class MainActivity extends Activity implements OnTouchListener
 			rectLeft = pastLeft;
 			rectTop = pastTop;
 			rectBottom = pastBottom;
+		}
+		
+		public void checkTheVal()
+		{
+			if ( deltaMove == ( rectRight - pastRight ) )
+			{
+			
+			}
 		}
 	}
 }
