@@ -173,7 +173,6 @@ public class MainActivity extends Activity implements OnTouchListener
 			int looper;
 			while( running )
 			{
-				mRectOne.collisionCheck();
 				Log.d( "KevinMess", "Loop!" );
 				Log.d( "startDir" , direction );
 				
